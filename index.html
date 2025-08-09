@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>مساعد اختيار التخصص — توجيهي الأردن (ذكي)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#071025;
+    --card:#0b1220;
+    --accent:#06b6d4;
+    --muted:#9fb3c9;
+    --text:#e6eef8;
+    --radius:12px;
+    --glass: rgba(255,255,255,0.03);
+    --input-border: rgba(255,255,255,0.06);
+  }
+
+  *{box-sizing:border-box;font-family:'Cairo',sans-serif}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,var(--bg),#021428);
+    color:var(--text);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  .wrap{max-width:980px;margin:28px auto;padding:20px;transition:filter .28s ease}
+  .wrap.blurred { filter: blur(4px) saturate(.95); pointer-events: none; }
+
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:800;color:#021726}
+  h1{font-size:20px;margin:0}
+  p.lead{color:var(--muted);margin-top:6px}
+
+  main{margin-top:18px;display:grid;grid-template-columns:1fr 360px;gap:18px}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.5)}
+
+  label{display:block;margin:10px 0 6px;color:var(--muted);font-size:14px}
+
+  input[type="number"], select, textarea{
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid var(--input-border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    color:var(--text);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input[type="number"]:focus, select:focus, textarea:focus{
+    box-shadow: 0 0 0 4px rgba(6,182,212,0.06);
+    border-color: rgba(6,182,212,0.7);
+  }
+
+  select{
+    padding-right: 40px;
+    background-image:
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='10'><polyline points='1,1 7,8 13,1' stroke='%23A9EAF2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat, no-repeat;
+    background-position: center right 12px, center right 12px;
+    background-size: auto, 14px 10px;
+  }
+  option{ background: var(--card); color: var(--text); }
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  button{background:var(--accent);color:#021726;padding:10px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+  button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+  .result-list{margin-top:12px}
+  .major{padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);margin-bottom:10px;border:1px solid rgba(255,255,255,0.02)}
+  .score-badge{float:left;background:#0b2b33;color:#aef4ff;padding:6px 10px;border-radius:8px;font-weight:700}
+  .muted{color:var(--muted);font-size:13px}
+  .small{font-size:13px;color:var(--muted)}
+  .advices{margin-top:8px;color:#dbe9f3;background:rgba(0,0,0,0.12);padding:8px;border-radius:8px}
+  footer{margin-top:18px;color:var(--muted);text-align:center;font-size:13px}
+  .eligible {border-left:4px solid #16a34a}
+  .not-eligible {opacity:0.9;border-left:4px solid #b91c1c}
+  .meta {font-size:13px;color:var(--muted);margin-top:6px}
+  .controls {display:flex;gap:8px;align-items:center;margin-top:8px}
+
+
+  .overlay {
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: rgba(2,6,12,0.62);
+    backdrop-filter: blur(6px) saturate(.95);
+    -webkit-backdrop-filter: blur(6px) saturate(.95);
+    opacity:1;
+    transition: opacity .35s ease;
+    padding:20px;
+  }
+  .overlay.hidden {
+    opacity:0;
+    pointer-events:none;
+  }
+  .overlayBox {
+    background: linear-gradient(180deg, rgba(11,17,32,0.98), rgba(6,12,22,0.95));
+    border-radius:12px;
+    padding:20px 22px;
+    max-width:820px;
+    width:100%;
+    box-shadow: 0 12px 40px rgba(2,6,12,0.7);
+    color:var(--text);
+    text-align:center;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .overlayBox h2{margin:0 0 6px 0;font-size:18px}
+  .overlayBox p{margin:6px 0 0 0;color:var(--muted);line-height:1.5}
+  .overlayClose{
+    margin-top:14px;
+    display:inline-block;
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    color:var(--muted);
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+  }
+  .promoButtons { display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px }
+  .promoButtons a{ display:inline-block;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.03);color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,0.04) }
+
+  @media (max-width:600px){
+    .overlayBox{padding:16px}
+    .overlayBox h2{font-size:16px}
+    .promoButtons {flex-direction:column}
+  }
+</style>
+</head>
+<body>
+  <div id="landingOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="تنبيه معدلات القبول" style="display:none">
+    <div class="overlayBox" role="document">
+      <h2>تنويه هام — معدلات القبول</h2>
+      <p>
+        المعلومات المعروضة في هذه الأداة حول <strong>معدلات القبول</strong> هي تقديرات خاصة بـ
+        <span style="color:#9fe9ff">الجامعات الحكومية الأردنية فقط</span>.
+        أدنى معدل تقريبي للقبول في بعض البرامج هو <strong>65%</strong>.
+        الرجاء التحقق من موقع الجامعة أو دليل القبول الرسمي للحصول على القيم النهائية قبل اتخاذ قرار التقديم.
+      </p>
+      <button id="overlayClose" class="overlayClose" aria-label="إغلاق التنبيه الآن">حَسَنًا — إغلاق</button>
+    </div>
+  </div>
+
+
+  <div id="promoOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="تنبيه تحميل تطبيق جامعيون" style="display:none">
+    <div class="overlayBox" role="document">
+      <h2>نزّل تطبيق جامعيون — قبل بدء الدوام</h2>
+      <p>
+لو أنت طالب جديد بالجامعة، جرب تطبيق          <strong>جامعيون</strong>  
+، بيساعدك ترتب دراستك ويوفر لك كل شي تحتاجه برحلتك الجامعية    </p>
+
+      <div class="promoButtons" role="region" aria-label="روابط التطبيق والاتصال">
+        <a id="appLink" href="https://jamiao.vercel.app/" target="_blank" rel="noopener">تحميل التطبيق</a>
+        <a id="instaLink" href="https://www.instagram.com/jami3iyoun/" target="_blank" rel="noopener">صفحة التطبيق على إنستقرام</a>
+                <a id="instaLink" href="https://www.instagram.com/bh.adr/" target="_blank" rel="noopener">حساب المطور على انستقرام</a>
+
+      </div>
+
+      <div style="margin-top:12px;color:var(--muted);font-size:13px">
+        ستغلق هذه النافذة تلقائياً بعد <span id="promoCountdown">20</span> ثانية — أو اغلقها الآن.
+      </div>
+
+      <button id="promoClose" class="overlayClose" aria-label="إغلاق دعوة التحميل">موافق — إغلاق</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">ت</div>
+        <div>
+          <h1>مساعد اختيار التخصص — توجيهي الأردن (ذكي)</h1>
+          <p class="lead">تم التصميم والتطوير بواسطة المهندس <a href="https://www.instagram.com/bh.adr/" target="_blank" style="color:var(--accent)">بدر الزعبي</a></p>
+        </div>
+      </div>
+      <div class="small muted">لا تنسى تحميل تطبيق <a href="https://jamiao.vercel.app/" target="_blank" style="color:var(--accent)">جامعيون</a></div>
+    </header>
+
+    <main>
+      <section class="card" aria-labelledby="formTitle">
+        <h2 id="formTitle">اختر فرعك ومعدلك</h2>
+
+        <label>فرع التوجيهي</label>
+        <select id="branch">
+          <option value="">-- اختر الفرع --</option>
+          <option value="scientific">الفرع العلمي</option>
+          <option value="literary">الفرع الأدبي</option>
+          <option value="industrial">الفرع الصناعي</option>
+          <option value="agricultural">الفرع الزراعي</option>
+          <option value="hotel">الفرع الفندقي / الاقتصاد المنزلي</option>
+        </select>
+
+        <label>أدخل معدلك (نسبة مئوية)</label>
+        <input id="totalPercent" type="number" placeholder="مثال: 92 أو 85.5" min="0" max="100" step="0.1">
+
+        <label>تفضيلاتك (اختياري) — قيِّم 1 إلى 5</label>
+        <div class="grid-2">
+          <div>
+            <small class="small">حب البرمجة / حل المشكلات</small>
+            <select id="prefCoding">
+              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <small class="small">العمل المخبري / البحثي</small>
+            <select id="prefLab">
+              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <small class="small">التعامل مع الناس/خدمة المجتمع</small>
+            <select id="prefPeople">
+              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <small class="small">التصميم والإبداع</small>
+            <select id="prefDesign">
+              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <small class="small">الرغبة في أرباح/ريادة أعمال</small>
+            <select id="prefBiz">
+              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <small class="small">الاستقرار ووضوح الروتين</small>
+            <select id="prefStable">
+              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
+            </select>
+          </div>
+        </div>
+
+        <label>خيارات العرض</label>
+        <div class="controls">
+          <label class="small muted"><input type="checkbox" id="onlyEligible"> عرض التخصصات التي معدلي يؤهلها فقط</label>
+        </div>
+
+        <label>ملاحظات إضافية (اختياري)</label>
+        <textarea id="notes" rows="3" placeholder="مثلاً: أفضل جامعة معينة، أو لا أريد دراسة بعيدة"></textarea>
+
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button id="run">اقترح تخصص لي</button>
+          <button id="reset" class="secondary">تفريغ الحقول</button>
+          <button id="explain" class="secondary">كيف تعمل الخوارزمية؟</button>
+        </div>
+
+        <div id="debug" class="small muted" style="margin-top:10px;display:none"></div>
+      </section>
+
+      <aside class="card">
+        <h2>النتائج</h2>
+        <div id="results" class="result-list">
+          <div class="small muted">اضغط "اقترح تخصص لي" لعرض الاقتراحات هنا.</div>
+        </div>
+
+        <div style="margin-top:12px">
+          <button id="export" class="secondary">حفظ النتائج كـ نص</button>
+          <button id="print" class="secondary">طباعة الصفحة</button>
+        </div>
+
+        <div style="margin-top:12px" class="small muted">
+          ملاحظة: النتائج إرشادية — راجع شروط القبول الرسمية للجامعات ونقاط القطع المحددة رسمياً.
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="small muted">صُنع لأغراض تعليمية — لا تعتبر بديلاً عن القبول الرسمي</div>
+    </footer>
+  </div>
+
+<script>
+
+(function(){
+  const wrap = document.querySelector('.wrap');
+
+  const overlay1 = document.getElementById('landingOverlay');
+  const close1 = document.getElementById('overlayClose');
+
+  const overlay2 = document.getElementById('promoOverlay');
+  const close2 = document.getElementById('promoClose');
+  const countdownEl = document.getElementById('promoCountdown');
+
+  const AUTO_HIDE_MS = 17000; 
+  const PROMO_MS = 30000;     
+
+  let timer1 = null;
+  let timer2 = null;
+  let countdownTimer = null;
+  let remainingSec = Math.ceil(PROMO_MS/1000);
+
+  function showOverlay(el){
+    if(!el) return;
+    el.style.display = 'flex';
+    el.classList.remove('hidden');
+    wrap.classList.add('blurred');
+  }
+  function hideOverlay(el){
+    if(!el) return;
+    el.classList.add('hidden');
+
+    setTimeout(()=> {
+      el.style.display = 'none';
+
+      if((!overlay1 || overlay1.style.display === 'none') && (!overlay2 || overlay2.style.display === 'none')){
+        wrap.classList.remove('blurred');
+      }
+    }, 420);
+  }
+
+  function startPromoCountdown(){
+
+    remainingSec = Math.ceil(PROMO_MS/1000);
+    if(countdownEl) countdownEl.textContent = remainingSec;
+
+    countdownTimer = setInterval(()=>{
+      remainingSec -= 1;
+      if(countdownEl) countdownEl.textContent = Math.max(0, remainingSec);
+    }, 1000);
+  }
+  function stopPromoCountdown(){
+    if(countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+    if(countdownEl) countdownEl.textContent = Math.ceil(PROMO_MS/1000);
+  }
+
+
+  window.addEventListener('load', ()=>{
+
+    showOverlay(overlay1);
+
+
+    timer1 = setTimeout(()=>{
+      hideOverlay(overlay1);
+      timer1 = null;
+
+      setTimeout(()=> showPromoOverlay(), 200); // فاصل قصير لتحسين الإنتقال
+    }, AUTO_HIDE_MS);
+
+
+    close1 && close1.addEventListener('click', ()=>{
+      if(timer1){ clearTimeout(timer1); timer1 = null; }
+      hideOverlay(overlay1);
+      setTimeout(()=> showPromoOverlay(), 200);
+    });
+
+
+    overlay1 && overlay1.addEventListener('click', (e)=>{
+      if(e.target === overlay1){
+        if(timer1){ clearTimeout(timer1); timer1 = null; }
+        hideOverlay(overlay1);
+        setTimeout(()=> showPromoOverlay(), 200);
+      }
+    });
+
+
+    close1 && close1.focus();
+  });
+
+  function showPromoOverlay(){
+
+    showOverlay(overlay2);
+
+    startPromoCountdown();
+
+
+    timer2 = setTimeout(()=>{
+      hideOverlay(overlay2);
+      timer2 = null;
+      stopPromoCountdown();
+    }, PROMO_MS);
+
+
+    close2 && close2.addEventListener('click', ()=>{
+      if(timer2){ clearTimeout(timer2); timer2 = null; }
+      hideOverlay(overlay2);
+      stopPromoCountdown();
+    });
+
+
+    overlay2 && overlay2.addEventListener('click', (e)=>{
+      if(e.target === overlay2){
+        if(timer2){ clearTimeout(timer2); timer2 = null; }
+        hideOverlay(overlay2);
+        stopPromoCountdown();
+      }
+    });
+
+
+    close2 && close2.focus();
+  }
+
+
+  window.addEventListener('beforeunload', ()=>{
+    if(timer1) clearTimeout(timer1);
+    if(timer2) clearTimeout(timer2);
+    if(countdownTimer) clearInterval(countdownTimer);
+  });
+})();
+
+
+
+const majors = [
+  { id:'medicine', name:'دكتور في الطب', traits:{coding:1,lab:5,people:5,design:1,biz:1,stable:5}, desc:'الطب البشري - مهنة تحتاج معدل عالي والتزام طويل.' },
+  { id:'dentistry', name:'دكتور في طب الأسنان', traits:{coding:1,lab:5,people:5,design:2,biz:1,stable:5}, desc:'طبيب أسنان: دقة عمل ومهارات يدوية.' },
+  { id:'pharmacy', name:'دكتور الصيدلة', traits:{coding:1,lab:5,people:4,design:1,biz:3,stable:5}, desc:'علوم أدوية وكيمياء تطبيقية.' },
+  { id:'eng_elec', name:'الهندسة الكهربائية', traits:{coding:3,lab:4,people:3,design:4,biz:3,stable:4}, desc:'كهرباء، طاقة، وأنظمة.' },
+  { id:'mechatronics', name:'الهندسة الميكاترونكس', traits:{coding:4,lab:4,people:3,design:4,biz:3,stable:4}, desc:'دمج ميكانيك، إلكترونيات وتحكم.' },
+  { id:'cs', name:'علم الحاسوب', traits:{coding:5,lab:3,people:3,design:3,biz:3,stable:4}, desc:'برمجة، خوارزميات، نظم وذكاء اصطناعي.' },
+  { id:'chem_ind', name:'الكيمياء الصناعية', traits:{coding:2,lab:5,people:2,design:2,biz:2,stable:4}, desc:'كيمياء صناعية وتطبيقات.' },
+  { id:'microbio', name:'الأحياء الدقيقة', traits:{coding:1,lab:5,people:2,design:2,biz:2,stable:4}, desc:'أبحاث ميكروبيولوجيا وتطبيقات صحية.' },
+  { id:'medlab', name:'العلوم الطبية المخبرية', traits:{coding:1,lab:5,people:3,design:2,biz:2,stable:4}, desc:'عمل مخبري وتحاليل طبية.' },
+  { id:'data_science', name:'علم البيانات', traits:{coding:5,lab:3,people:3,design:3,biz:4,stable:4}, desc:'تحليل بيانات، تعلم آلي وتطبيقات.' },
+  { id:'ai', name:'الذكاء الاصطناعي', traits:{coding:5,lab:3,people:2,design:3,biz:4,stable:4}, desc:'بحث وتطوير خوارزميات ذكية.' },
+  { id:'cyber', name:'الأمن السيبراني', traits:{coding:5,lab:3,people:2,design:3,biz:3,stable:4}, desc:'حماية أنظمة وشبكات معلومات.' },
+  { id:'it', name:'تكنولوجيا المعلومات', traits:{coding:4,lab:3,people:3,design:2,biz:3,stable:4}, desc:'شبكات، نظم وإدارة بنى تحتية.' },
+  { id:'maths', name:'الرياضيات', traits:{coding:4,lab:2,people:2,design:2,biz:1,stable:4}, desc:'أساس نظري لحلول حسابية.' },
+  { id:'physics', name:'الفيزياء', traits:{coding:3,lab:5,people:2,design:2,biz:1,stable:4}, desc:'بحث فيزيائي وتطبيقات تقنية.' },
+  { id:'chemistry', name:'الكيمياء', traits:{coding:2,lab:5,people:2,design:2,biz:1,stable:4}, desc:'كيمياء تحليلية وصناعية.' },
+  { id:'geology', name:'الجيولوجيا البيئية والتطبيقية', traits:{coding:2,lab:4,people:2,design:2,biz:2,stable:4}, desc:'أرض، بيئة، واستكشاف موارد.' },
+
+  { id:'english', name:'اللغة الإنجليزية وآدابها', traits:{coding:1,lab:1,people:5,design:3,biz:2,stable:4}, desc:'دراسة لغة وأدب وإنشاء محتوى.' },
+  { id:'arabic', name:'اللغة العربية وآدابها', traits:{coding:1,lab:1,people:5,design:3,biz:1,stable:4}, desc:'نحو، أدب وشعر.' },
+  { id:'french', name:'اللغة الفرنسية وآدابها', traits:{coding:1,lab:1,people:4,design:3,biz:1,stable:4}, desc:'فرانكفونية وترجمة.' },
+  { id:'spanish', name:'اللغة الإسبانية وآدابها', traits:{coding:1,lab:1,people:4,design:3,biz:1,stable:4}, desc:'لغة وثقافة.' },
+  { id:'history', name:'التاريخ', traits:{coding:1,lab:1,people:3,design:2,biz:1,stable:4}, desc:'دراسات تاريخية وبحث.' },
+  { id:'geography', name:'الجغرافيا', traits:{coding:2,lab:2,people:3,design:2,biz:1,stable:4}, desc:'جغرافيا بشرية وطبيعية.' },
+  { id:'philosophy', name:'الفلسفة', traits:{coding:1,lab:1,people:2,design:2,biz:1,stable:4}, desc:'فكر ونظريات فلسفية.' },
+  { id:'sociology', name:'علم الاجتماع', traits:{coding:1,lab:1,people:5,design:2,biz:1,stable:3}, desc:'دراسة المجتمع وسلوك الأفراد.' },
+  { id:'psych', name:'علم النفس', traits:{coding:1,lab:2,people:5,design:2,biz:2,stable:3}, desc:'دراسات سلوكية ونفسية.' },
+  { id:'special_edu', name:'التربية الخاصة', traits:{coding:1,lab:1,people:5,design:2,biz:1,stable:4}, desc:'دعم التلاميذ ذوي الاحتياجات الخاصة.' },
+  { id:'media', name:'الإعلام/الصحافة', traits:{coding:1,lab:1,people:5,design:3,biz:3,stable:3}, desc:'إنتاج محتوى وصحافة.' },
+  { id:'translation', name:'الترجمة', traits:{coding:1,lab:1,people:4,design:2,biz:2,stable:4}, desc:'ترجمة احترافية ونصوص.' },
+  { id:'islamic', name:'الدراسات الإسلامية', traits:{coding:1,lab:1,people:4,design:2,biz:1,stable:4}, desc:'فقه، شريعة ودراسات دينية.' },
+
+  { id:'eng_mech', name:'الهندسة الميكانيكية', traits:{coding:3,lab:4,people:3,design:4,biz:3,stable:4}, desc:'ميكانيكا وتصنيع.' },
+  { id:'eng_electronics', name:'الهندسة الإلكترونية', traits:{coding:4,lab:4,people:3,design:3,biz:3,stable:4}, desc:'دوائر وإلكترونيات صناعية.' },
+  { id:'eng_software', name:'هندسة البرمجيات', traits:{coding:5,lab:3,people:3,design:3,biz:3,stable:4}, desc:'برمجة هندسية ونظم.' },
+  { id:'eng_networks', name:'هندسة الشبكات', traits:{coding:4,lab:3,people:3,design:2,biz:3,stable:4}, desc:'شبكات وبنية تحتية.' },
+  { id:'it_tech', name:'تكنولوجيا المعلومات (صناعي)', traits:{coding:4,lab:3,people:3,design:2,biz:3,stable:4}, desc:'حلول تقنية صناعية.' },
+  { id:'mech_tech', name:'تكنولوجيا الميكاترونكس', traits:{coding:4,lab:4,people:3,design:4,biz:3,stable:4}, desc:'تقنيات تحكم وهندسة متكاملة.' },
+  { id:'welding', name:'تكنولوجيا اللحام', traits:{coding:1,lab:5,people:2,design:2,biz:2,stable:4}, desc:'مهارات حرفية وتصنيعية.' },
+
+  { id:'plant', name:'الإنتاج النباتي', traits:{coding:1,lab:4,people:3,design:2,biz:3,stable:3}, desc:'زراعة وإنتاج محاصيل.' },
+  { id:'plant_protection', name:'وقاية النبات', traits:{coding:1,lab:5,people:2,design:2,biz:2,stable:3}, desc:'مكافحة الآفات وحماية المحاصيل.' },
+  { id:'horticulture', name:'البستنة', traits:{coding:1,lab:4,people:3,design:3,biz:2,stable:3}, desc:'تنسيق نباتي وزراعي.' },
+  { id:'animal', name:'الإنتاج الحيواني', traits:{coding:1,lab:4,people:3,design:2,biz:3,stable:3}, desc:'تربية مواشي وإدارة إنتاج حيواني.' },
+  { id:'food_tech', name:'علوم الأغذية والتغذية', traits:{coding:2,lab:5,people:3,design:2,biz:3,stable:4}, desc:'تصنيع أغذية وجودة.' },
+  { id:'agri_bus', name:'إدارة الأعمال الزراعية', traits:{coding:2,lab:2,people:3,design:2,biz:4,stable:3}, desc:'أعمال زراعية واقتصاد ري.' },
+  { id:'env_science', name:'علوم البيئة', traits:{coding:2,lab:4,people:3,design:2,biz:2,stable:3}, desc:'بيئة واستدامة.' },
+
+  { id:'hotel', name:'إدارة الفنادق', traits:{coding:1,lab:1,people:5,design:3,biz:4,stable:3}, desc:'إدارة مرافق ضيافة.' },
+  { id:'tourism', name:'إدارة السياحة', traits:{coding:1,lab:1,people:5,design:2,biz:4,stable:3}, desc:'سياحة وسفر.' },
+  { id:'aviation', name:'إدارة الطيران', traits:{coding:1,lab:1,people:5,design:2,biz:4,stable:3}, desc:'خدمات جوية وإدارة مطارات.' },
+  { id:'events', name:'إدارة الفعاليات', traits:{coding:1,lab:1,people:5,design:3,biz:4,stable:3}, desc:'تنظيم فعاليات ومناسبات.' },
+  { id:'restaurants', name:'إدارة المطاعم', traits:{coding:1,lab:1,people:5,design:2,biz:4,stable:3}, desc:'تشغيل وإدارة مطاعم.' },
+  { id:'home_econ', name:'الاقتصاد المنزلي', traits:{coding:1,lab:1,people:4,design:3,biz:2,stable:4}, desc:'إدارة منزلية وموارد أسرية.' },
+  { id:'fashion', name:'تصميم الأزياء', traits:{coding:1,lab:1,people:3,design:5,biz:3,stable:3}, desc:'تصميم أزياء وموضة.' },
+  { id:'culinary', name:'فنون الطهي', traits:{coding:1,lab:5,people:4,design:4,biz:3,stable:3}, desc:'فنون الطهي ومهارات مطبخ احترافية.' }
+];
+
+const cutoffs = {
+  medicine: 98.55, dentistry: 97.8, pharmacy: 96.6, eng_elec: 95.3, mechatronics: 96.4,
+  cs: 97.15, chem_ind: 65.0, microbio:65.0, medlab:70.0, data_science:65.0, ai:65.0,
+  cyber:65.0, it:65.0, maths:65.0, physics:65.0, chemistry:65.0, geology:65.0,
+
+  english:95.2, arabic:65.0, french:65.0, spanish:65.0, history:65.0, geography:65.0,
+  philosophy:65.0, sociology:65.0, psych:65.0, special_edu:65.0, media:65.0, translation:65.0, islamic:65.0,
+
+  eng_mech:80.0, eng_electronics:80.0, eng_software:80.0, eng_networks:80.0, it_tech:80.0, mech_tech:80.0, welding:80.0, eng_renew:80.0,
+
+  plant:65.0, plant_protection:65.0, horticulture:65.0, animal:65.0, food_tech:65.0, agri_bus:68.4, env_science:65.0,
+
+  hotel:65.0, tourism:65.0, aviation:65.0, events:65.0, restaurants:65.0, home_econ:65.0, fashion:65.0, culinary:65.0
+};
+
+const branchAllowed = {
+  scientific: ['medicine','dentistry','pharmacy','eng_elec','mechatronics','cs','chem_ind','microbio','medlab','data_science','ai','cyber','it','maths','physics','chemistry','geology','nursing','physio','ot','agri','business'],
+  literary: ['english','arabic','french','spanish','history','geography','philosophy','sociology','psych','special_edu','media','translation','islamic','education','economics','business'],
+  industrial: ['eng_mech','eng_electronics','eng_software','eng_networks','it_tech','mech_tech','production','design_ind','mechatronics','welding','industrial_tech','eng_renew'],
+  agricultural: ['plant','plant_protection','horticulture','animal','food_tech','agri_bus','env_science'],
+  hotel: ['hotel','tourism','aviation','events','restaurants','home_econ','fashion','culinary','business']
+};
+
+function capabilityFromPercent(p){
+  const v = Number(p);
+  if(isNaN(v)) return 0;
+  return Math.min(Math.max(v/100, 0), 1);
+}
+function interestMatch(traits, prefs){
+  let sum = 0, count = 0;
+  Object.keys(traits).forEach(k=>{
+    if(prefs[k] !== undefined){
+      sum += (traits[k] * prefs[k]);
+      count++;
+    }
+  });
+  if(count === 0) return 0;
+  const max = 5 * 5 * count;
+  return sum / max;
+}
+
+function runRecommendation(branch, totalPercent, prefs, onlyEligible=false){
+  const cap = capabilityFromPercent(totalPercent);
+  const allowed = branchAllowed[branch] || [];
+  const results = [];
+
+  majors.forEach(m=>{
+    if(!allowed.includes(m.id)) return;
+    const cutoffPct = cutoffs[m.id] !== undefined ? cutoffs[m.id] : 65.0;
+    const cutoff = cutoffPct / 100;
+    const affinity = (branchAllowed[branch].includes(m.id) ? 0.95 : 0.15);
+    const interest = interestMatch(m.traits, prefs);
+
+    let eligibilityFactor;
+    if (cutoff <= 0) eligibilityFactor = 0;
+    else eligibilityFactor = (cap >= cutoff) ? 1 : (cap / cutoff);
+
+    const score = 0.50 * cap + 0.25 * affinity + 0.15 * eligibilityFactor + 0.10 * interest;
+    const eligible = cap >= cutoff;
+
+    if(onlyEligible && !eligible) return;
+
+    results.push({
+      id: m.id,
+      name: m.name,
+      desc: m.desc,
+      cutoffPct,
+      cutoff,
+      cap,
+      affinity,
+      interest,
+      eligibilityFactor,
+      eligible,
+      score
+    });
+  });
+
+  results.sort((a,b)=>{
+    if(a.eligible !== b.eligible) return (a.eligible? -1:1);
+    return b.score - a.score;
+  });
+
+  return results;
+}
+
+
+document.getElementById('run').addEventListener('click', ()=>{
+  const branch = document.getElementById('branch').value;
+  const totalPercent = document.getElementById('totalPercent').value.trim();
+  const prefs = {
+    coding: Number(document.getElementById('prefCoding').value),
+    lab: Number(document.getElementById('prefLab').value),
+    people: Number(document.getElementById('prefPeople').value),
+    design: Number(document.getElementById('prefDesign').value),
+    biz: Number(document.getElementById('prefBiz').value),
+    stable: Number(document.getElementById('prefStable').value),
+  };
+  const onlyEligible = document.getElementById('onlyEligible').checked;
+  const resultsEl = document.getElementById('results');
+
+  if(!branch || totalPercent === ''){
+    resultsEl.innerHTML = '<div class="small muted">يرجى اختيار الفرع وإدخال المعدل أولاً.</div>';
+    return;
+  }
+  const totalNum = Number(totalPercent);
+  if(isNaN(totalNum) || totalNum < 0 || totalNum > 100){
+    resultsEl.innerHTML = '<div class="small muted">أدخل معدلًا صالحًا بين 0 و 100 (نسبة مئوية).</div>';
+    return;
+  }
+
+  const res = runRecommendation(branch, totalNum, prefs, onlyEligible);
+  if(res.length === 0){
+    resultsEl.innerHTML = '<div class="small muted">لا توجد تخصصات متاحة/مؤهلة للمعطيات الحالية.</div>';
+    return;
+  }
+  renderResults(res, {branch, totalPercent: totalNum, prefs});
+});
+
+document.getElementById('reset').addEventListener('click', ()=>{
+  document.getElementById('branch').value = '';
+  document.getElementById('totalPercent').value = '';
+  document.getElementById('notes').value = '';
+  document.getElementById('onlyEligible').checked = false;
+  ['prefCoding','prefLab','prefPeople','prefDesign','prefBiz','prefStable'].forEach(id=>{
+    document.getElementById(id).value = '3';
+  });
+  document.getElementById('results').innerHTML = '<div class="small muted">تم تفريغ الحقول.</div>';
+});
+
+document.getElementById('explain').addEventListener('click', ()=>{
+  alert(`كيف تعمل الخوارزمية (مبسط):
+- المعدل يُحوّل لقياس قدرة (0..1) (50% من التقييم).
+- نأخذ توافق الفرع (25%) ونستبعد تخصصات ليست من فرعك.
+- نتحقق من نقطة القطع لكل تخصص (أدنى معدل قبول). إذا معدلك >= القطع، يحصل التخصص على دفعة قبول (15%).
+- نأخذ تفضيلاتك (10%) للموازنة النهائية.
+- نرتب: المتأهلين أولاً ثم بقية التخصصات، ونعرض تفاصيل القطع والفرق.`);
+});
+
+document.getElementById('export').addEventListener('click', ()=>{
+  const txt = document.getElementById('results').innerText.trim();
+  const blob = new Blob([txt || 'لا توجد نتائج بعد.'], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'recommendation.txt';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+document.getElementById('print').addEventListener('click', ()=>window.print());
+
+function renderResults(sortedResults, inputs){
+  const container = document.getElementById('results');
+  container.innerHTML = '';
+  sortedResults.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'major ' + (r.eligible ? 'eligible' : 'not-eligible');
+    const scorePercent = Math.round(r.score * 100);
+    const diffPct = Math.round((r.cap - r.cutoff) * 1000)/10;
+    const eligibleText = r.eligible ? `<strong style="color:#7ef2b9">مؤهل (معدلك ≥ ${r.cutoffPct}%)</strong>` :
+                                       `<strong style="color:#ffb4b4">غير مؤهل (يحتاج ${r.cutoffPct}% — فرق ${diffPct}% )</strong>`;
+    div.innerHTML = `
+      <div style="overflow:hidden">
+        <span class="score-badge">${scorePercent}%</span>
+        <h3 style="margin:0 0 6px 0">${r.name}</h3>
+        <div class="muted">${r.desc}</div>
+      </div>
+
+      <div style="clear:left;margin-top:8px" class="small muted">
+        <strong>تفاصيل قبول</strong>
+        <ul style="margin:6px 0 0 12px">
+          <li>أدنى معدل قبول: ${r.cutoffPct}%</li>
+          <li>حالتك بالنسبة للقطع: ${eligibleText}</li>
+          <li>توافق الفرع: ${(Math.round(r.affinity*100))}%</li>
+          <li>القدرة (المعدل): ${(Math.round(r.cap*100))}%</li>
+          <li>توافق الاهتمامات: ${(Math.round(r.interest*100))}%</li>
+        </ul>
+      </div>
+
+      <div class="advices small">${generateAdvice(r, inputs)}</div>
+    `;
+    container.appendChild(div);
+  });
+
+  const more = document.createElement('div');
+  more.className = 'small muted';
+  more.style.marginTop = '8px';
+  more.innerHTML = '<strong>ترتيب كامل</strong><br>' + sortedResults.map(x=>`${x.name} — ${Math.round(x.score*100)}% ${x.eligible ? ' (مؤهل)' : ''}`).join('<br>');
+  container.appendChild(more);
+}
+
+function generateAdvice(r, inputs){
+  const lines = [];
+  if(r.cap < r.cutoff){
+    const need = Math.round((r.cutoff - r.cap) * 1000)/10;
+    lines.push(`معدلك أقل من المطلوب لهذا التخصص بحوالي ${need} نقطة مئوية؛ فكّر في بدائل أو برامج تحضير/دبلوم.`);
+  } else {
+    lines.push('معدلك يغطي شرط القبول لهذا التخصص — تأكد من مستندات القبول الأخرى ومتطلبات الجامعة.');
+  }
+  if(['cs','it','eng_software','eng_networks','eng_industrial','mechatronics','eng_mech','eng_electronics'].includes(r.id)){
+    lines.push('نصيحة: أنجز مشاريع عملية أو دورات قصيرة لزيادة فرص القبول والتوظيف.');
+  }
+  if(['medicine','dentistry','pharmacy','medlab','physio','ot'].includes(r.id)){
+    lines.push('نصيحة: المجالات الطبية قد تتطلب امتحانات/تقييمات إضافية وخبرة عملية/تطوع؛ استعد لذلك.');
+  }
+  if(r.affinity < 0.5){
+    lines.push('ملحوظة: تخصص بعيد نسبياً عن فرعك — فكّر في تطوير مهارات إضافية إن كنت مصرّاً على التقديم.');
+  }
+  return lines.map(l=>`<div>• ${l}</div>`).join('');
+}
+</script>
+</body>
+</html>
