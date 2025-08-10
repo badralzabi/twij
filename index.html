@@ -178,8 +178,8 @@
   const close2 = document.getElementById('promoClose');
   const countdownEl = document.getElementById('promoCountdown');
 
-  const AUTO_HIDE_MS = 17000; // وقت ظهور التنبيه الأول (مللي)
-  const PROMO_MS = 20000;     // وقت ظهور التنبيه الثاني (مللي)
+  const AUTO_HIDE_MS = 17000; 
+  const PROMO_MS = 50000;    
   let timer1 = null, timer2 = null, countdownTimer = null;
 
   function hideOverlayAsync(el){
@@ -189,7 +189,7 @@
       setTimeout(()=>{
         el.style.display = 'none';
         resolve();
-      }, 420); // يتطابق مع CSS transition
+      }, 420); 
     });
   }
   function showOverlay(el){
@@ -281,7 +281,6 @@
   });
 })();
 
-/* ======== بيانات التخصصات + نقاط القطع + قواعد الفروع ======== */
 const majors = [
   { id:'medicine', name:'دكتور في الطب', traits:{coding:1,lab:5,people:5,design:1,biz:1,stable:5}, desc:'الطب البشري - مهنة تحتاج معدل عالي والتزام طويل.' },
   { id:'dentistry', name:'دكتور في طب الأسنان', traits:{coding:1,lab:5,people:5,design:2,biz:1,stable:5}, desc:'طبيب أسنان: دقة عمل ومهارات يدوية.' },
@@ -364,7 +363,6 @@ const branchAllowed = {
   hotel: ['hotel','tourism','aviation','events','restaurants','home_econ','fashion','culinary','business']
 };
 
-/* ======== وظائف الحساب ======== */
 function capabilityFromPercent(p){
   const v = Number(p);
   if(isNaN(v)) return 0;
@@ -427,7 +425,6 @@ function runRecommendation(branch, totalPercent, prefs, onlyEligible=false){
   return results;
 }
 
-/* ======== ربط الواجهة ======== */
 document.getElementById('run').addEventListener('click', ()=>{
   const branch = document.getElementById('branch').value;
   const totalPercent = document.getElementById('totalPercent').value.trim();
@@ -555,6 +552,7 @@ function generateAdvice(r, inputs){
 </script>
 </body>
 </html>
+
 
 
 
