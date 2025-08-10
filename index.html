@@ -55,31 +55,39 @@
 </head>
 <body>
   <!-- Overlay 1 -->
-  <div id="landingOverlay" class="overlay" style="display:none" aria-modal="true" role="dialog" aria-label="تنبيه معدلات القبول">
+   <div id="landingOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="تنبيه معدلات القبول" style="display:none">
     <div class="overlayBox" role="document">
       <h2>تنويه هام — معدلات القبول</h2>
       <p>
-        المعلومات في هذه الأداة حول <strong>معدلات القبول</strong> هي تقديرات خاصة بـ
+        المعلومات المعروضة في هذه الأداة حول <strong>معدلات القبول</strong> هي تقديرات خاصة بـ
         <span style="color:#9fe9ff">الجامعات الحكومية الأردنية فقط</span>.
         أدنى معدل تقريبي للقبول في بعض البرامج هو <strong>65%</strong>.
-        الرجاء التحقق من موقع الجامعة للحصول على القيم النهائية.
+        الرجاء التحقق من موقع الجامعة أو دليل القبول الرسمي للحصول على القيم النهائية قبل اتخاذ قرار التقديم.
       </p>
-      <button id="overlayClose" class="overlayClose" aria-label="إغلاق التنبيه">حَسَنًا — إغلاق</button>
+      <button id="overlayClose" class="overlayClose" aria-label="إغلاق التنبيه الآن">حَسَنًا — إغلاق</button>
     </div>
   </div>
 
-  <!-- Overlay 2 -->
-  <div id="promoOverlay" class="overlay" style="display:none" aria-modal="true" role="dialog" aria-label="دعوة تحميل التطبيق">
+  
+  <div id="promoOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="تنبيه تحميل تطبيق جامعيون" style="display:none">
     <div class="overlayBox" role="document">
       <h2>نزّل تطبيق جامعيون — قبل بدء الدوام</h2>
-      <p>حمّل تطبيق <strong>جامعيون</strong> لتصلك تحديثات القبول ونصائح التسجيل.</p>
+      <p>
+لو أنت طالب جديد بالجامعة، جرب تطبيق          <strong>جامعيون</strong>  
+، بيساعدك ترتب دراستك ويوفر لك كل شي تحتاجه برحلتك الجامعية    </p>
+
       <div class="promoButtons" role="region" aria-label="روابط التطبيق والاتصال">
         <a id="appLink" href="https://jamiao.vercel.app/" target="_blank" rel="noopener">تحميل التطبيق</a>
-        <a id="emailLink" href="mailto:contact@jamiao.app">إرسال إيميل</a>
-        <a id="instaLink" href="https://www.instagram.com/bh.adr/" target="_blank" rel="noopener">إنستقرام</a>
+        <a id="instaLink" href="https://www.instagram.com/jami3iyoun/" target="_blank" rel="noopener">صفحة التطبيق على إنستقرام</a>
+                <a id="instaLink" href="https://www.instagram.com/bh.adr/" target="_blank" rel="noopener">حساب المطور على انستقرام</a>
+
       </div>
-      <div style="margin-top:12px;color:var(--muted);font-size:13px">تغلق تلقائياً بعد <span id="promoCountdown">20</span> ث.</div>
-      <button id="promoClose" class="overlayClose" aria-label="إغلاق الدعوة">موافق — إغلاق</button>
+
+      <div style="margin-top:12px;color:var(--muted);font-size:13px">
+        ستغلق هذه النافذة تلقائياً بعد <span id="promoCountdown">20</span> ثانية — أو اغلقها الآن.
+      </div>
+
+      <button id="promoClose" class="overlayClose" aria-label="إغلاق دعوة التحميل">موافق — إغلاق</button>
     </div>
   </div>
 
@@ -547,3 +555,4 @@ function generateAdvice(r, inputs){
 </script>
 </body>
 </html>
+
