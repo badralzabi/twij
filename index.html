@@ -7,67 +7,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#071025;
-    --card:#0b1220;
-    --accent:#06b6d4;
-    --muted:#9fb3c9;
-    --text:#e6eef8;
-    --radius:12px;
-    --glass: rgba(255,255,255,0.03);
-    --input-border: rgba(255,255,255,0.06);
+    --bg:#071025; --card:#0b1220; --accent:#06b6d4; --muted:#9fb3c9; --text:#e6eef8;
+    --radius:12px; --input-border: rgba(255,255,255,0.06);
   }
-
   *{box-sizing:border-box;font-family:'Cairo',sans-serif}
-  body{
-    margin:0;
-    background:linear-gradient(180deg,var(--bg),#021428);
-    color:var(--text);
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-  }
-
+  body{margin:0;background:linear-gradient(180deg,var(--bg),#021428);color:var(--text);min-height:100vh}
   .wrap{max-width:980px;margin:28px auto;padding:20px;transition:filter .28s ease}
   .wrap.blurred { filter: blur(4px) saturate(.95); pointer-events: none; }
-
   header{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:flex;align-items:center;gap:12px}
   .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:800;color:#021726}
   h1{font-size:20px;margin:0}
   p.lead{color:var(--muted);margin-top:6px}
-
   main{margin-top:18px;display:grid;grid-template-columns:1fr 360px;gap:18px}
   .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.5)}
-
   label{display:block;margin:10px 0 6px;color:var(--muted);font-size:14px}
-
-  input[type="number"], select, textarea{
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid var(--input-border);
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    color:var(--text);
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  input[type="number"]:focus, select:focus, textarea:focus{
-    box-shadow: 0 0 0 4px rgba(6,182,212,0.06);
-    border-color: rgba(6,182,212,0.7);
-  }
-
-  select{
-    padding-right: 40px;
-    background-image:
-      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='10'><polyline points='1,1 7,8 13,1' stroke='%23A9EAF2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-    background-repeat: no-repeat, no-repeat;
-    background-position: center right 12px, center right 12px;
-    background-size: auto, 14px 10px;
-  }
+  input[type="number"], select, textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--input-border);background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:var(--text);outline:none}
+  select{padding-right:40px;background-image: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='10'><polyline points='1,1 7,8 13,1' stroke='%23A9EAF2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat:no-repeat; background-position:center right 12px, center right 12px; background-size:auto,14px 10px}
   option{ background: var(--card); color: var(--text); }
-
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   button{background:var(--accent);color:#021726;padding:10px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
   button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
@@ -83,92 +40,46 @@
   .meta {font-size:13px;color:var(--muted);margin-top:6px}
   .controls {display:flex;gap:8px;align-items:center;margin-top:8px}
 
-
-  .overlay {
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background: rgba(2,6,12,0.62);
-    backdrop-filter: blur(6px) saturate(.95);
-    -webkit-backdrop-filter: blur(6px) saturate(.95);
-    opacity:1;
-    transition: opacity .35s ease;
-    padding:20px;
-  }
-  .overlay.hidden {
-    opacity:0;
-    pointer-events:none;
-  }
-  .overlayBox {
-    background: linear-gradient(180deg, rgba(11,17,32,0.98), rgba(6,12,22,0.95));
-    border-radius:12px;
-    padding:20px 22px;
-    max-width:820px;
-    width:100%;
-    box-shadow: 0 12px 40px rgba(2,6,12,0.7);
-    color:var(--text);
-    text-align:center;
-    border: 1px solid rgba(255,255,255,0.04);
-  }
+  /* overlay common */
+  .overlay { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; background: rgba(2,6,12,0.62); backdrop-filter: blur(6px) saturate(.95); -webkit-backdrop-filter: blur(6px) saturate(.95); opacity:1; transition: opacity .35s ease; padding:20px; }
+  .overlay.hidden { opacity:0; pointer-events:none; }
+  .overlayBox { background: linear-gradient(180deg, rgba(11,17,32,0.98), rgba(6,12,22,0.95)); border-radius:12px; padding:18px; width:100%; max-width:92vw; max-width:820px; max-height:80vh; overflow:auto; box-shadow: 0 12px 40px rgba(2,6,12,0.7); color:var(--text); text-align:center; border:1px solid rgba(255,255,255,0.04); }
   .overlayBox h2{margin:0 0 6px 0;font-size:18px}
   .overlayBox p{margin:6px 0 0 0;color:var(--muted);line-height:1.5}
-  .overlayClose{
-    margin-top:14px;
-    display:inline-block;
-    background:transparent;
-    border:1px solid rgba(255,255,255,0.06);
-    color:var(--muted);
-    padding:8px 12px;
-    border-radius:10px;
-    cursor:pointer;
-  }
+  .overlayClose{margin-top:14px;display:inline-block;background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 12px;border-radius:10px;cursor:pointer}
   .promoButtons { display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px }
   .promoButtons a{ display:inline-block;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.03);color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,0.04) }
 
-  @media (max-width:600px){
-    .overlayBox{padding:16px}
-    .overlayBox h2{font-size:16px}
-    .promoButtons {flex-direction:column}
-  }
+  @media (max-width:980px){ main{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
-  <div id="landingOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="تنبيه معدلات القبول" style="display:none">
+  <!-- Overlay 1 -->
+  <div id="landingOverlay" class="overlay" style="display:none" aria-modal="true" role="dialog" aria-label="تنبيه معدلات القبول">
     <div class="overlayBox" role="document">
       <h2>تنويه هام — معدلات القبول</h2>
       <p>
-        المعلومات المعروضة في هذه الأداة حول <strong>معدلات القبول</strong> هي تقديرات خاصة بـ
+        المعلومات في هذه الأداة حول <strong>معدلات القبول</strong> هي تقديرات خاصة بـ
         <span style="color:#9fe9ff">الجامعات الحكومية الأردنية فقط</span>.
         أدنى معدل تقريبي للقبول في بعض البرامج هو <strong>65%</strong>.
-        الرجاء التحقق من موقع الجامعة أو دليل القبول الرسمي للحصول على القيم النهائية قبل اتخاذ قرار التقديم.
+        الرجاء التحقق من موقع الجامعة للحصول على القيم النهائية.
       </p>
-      <button id="overlayClose" class="overlayClose" aria-label="إغلاق التنبيه الآن">حَسَنًا — إغلاق</button>
+      <button id="overlayClose" class="overlayClose" aria-label="إغلاق التنبيه">حَسَنًا — إغلاق</button>
     </div>
   </div>
 
-
-  <div id="promoOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="تنبيه تحميل تطبيق جامعيون" style="display:none">
+  <!-- Overlay 2 -->
+  <div id="promoOverlay" class="overlay" style="display:none" aria-modal="true" role="dialog" aria-label="دعوة تحميل التطبيق">
     <div class="overlayBox" role="document">
       <h2>نزّل تطبيق جامعيون — قبل بدء الدوام</h2>
-      <p>
-لو أنت طالب جديد بالجامعة، جرب تطبيق          <strong>جامعيون</strong>  
-، بيساعدك ترتب دراستك ويوفر لك كل شي تحتاجه برحلتك الجامعية    </p>
-
+      <p>حمّل تطبيق <strong>جامعيون</strong> لتصلك تحديثات القبول ونصائح التسجيل.</p>
       <div class="promoButtons" role="region" aria-label="روابط التطبيق والاتصال">
         <a id="appLink" href="https://jamiao.vercel.app/" target="_blank" rel="noopener">تحميل التطبيق</a>
-        <a id="instaLink" href="https://www.instagram.com/jami3iyoun/" target="_blank" rel="noopener">صفحة التطبيق على إنستقرام</a>
-                <a id="instaLink" href="https://www.instagram.com/bh.adr/" target="_blank" rel="noopener">حساب المطور على انستقرام</a>
-
+        <a id="emailLink" href="mailto:contact@jamiao.app">إرسال إيميل</a>
+        <a id="instaLink" href="https://www.instagram.com/bh.adr/" target="_blank" rel="noopener">إنستقرام</a>
       </div>
-
-      <div style="margin-top:12px;color:var(--muted);font-size:13px">
-        ستغلق هذه النافذة تلقائياً بعد <span id="promoCountdown">20</span> ثانية — أو اغلقها الآن.
-      </div>
-
-      <button id="promoClose" class="overlayClose" aria-label="إغلاق دعوة التحميل">موافق — إغلاق</button>
+      <div style="margin-top:12px;color:var(--muted);font-size:13px">تغلق تلقائياً بعد <span id="promoCountdown">20</span> ث.</div>
+      <button id="promoClose" class="overlayClose" aria-label="إغلاق الدعوة">موافق — إغلاق</button>
     </div>
   </div>
 
@@ -178,7 +89,7 @@
         <div class="logo">ت</div>
         <div>
           <h1>مساعد اختيار التخصص — توجيهي الأردن (ذكي)</h1>
-          <p class="lead">تم التصميم والتطوير بواسطة المهندس <a href="https://www.instagram.com/bh.adr/" target="_blank" style="color:var(--accent)">بدر الزعبي</a></p>
+          <p class="lead">تم التصميم بواسطة <a href="https://www.instagram.com/bh.adr/" target="_blank" style="color:var(--accent)">بدر الزعبي</a></p>
         </div>
       </div>
       <div class="small muted">لا تنسى تحميل تطبيق <a href="https://jamiao.vercel.app/" target="_blank" style="color:var(--accent)">جامعيون</a></div>
@@ -203,48 +114,28 @@
 
         <label>تفضيلاتك (اختياري) — قيِّم 1 إلى 5</label>
         <div class="grid-2">
-          <div>
-            <small class="small">حب البرمجة / حل المشكلات</small>
-            <select id="prefCoding">
-              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
-            </select>
+          <div><small class="small">حب البرمجة</small>
+            <select id="prefCoding"><option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option></select>
           </div>
-          <div>
-            <small class="small">العمل المخبري / البحثي</small>
-            <select id="prefLab">
-              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
-            </select>
+          <div><small class="small">العمل المخبري</small>
+            <select id="prefLab"><option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option></select>
           </div>
-          <div>
-            <small class="small">التعامل مع الناس/خدمة المجتمع</small>
-            <select id="prefPeople">
-              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
-            </select>
+          <div><small class="small">التعامل مع الناس</small>
+            <select id="prefPeople"><option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option></select>
           </div>
-          <div>
-            <small class="small">التصميم والإبداع</small>
-            <select id="prefDesign">
-              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
-            </select>
+          <div><small class="small">التصميم</small>
+            <select id="prefDesign"><option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option></select>
           </div>
-          <div>
-            <small class="small">الرغبة في أرباح/ريادة أعمال</small>
-            <select id="prefBiz">
-              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
-            </select>
+          <div><small class="small">ريادة أعمال</small>
+            <select id="prefBiz"><option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option></select>
           </div>
-          <div>
-            <small class="small">الاستقرار ووضوح الروتين</small>
-            <select id="prefStable">
-              <option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option>
-            </select>
+          <div><small class="small">الاستقرار</small>
+            <select id="prefStable"><option value="3">3</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="5">5</option></select>
           </div>
         </div>
 
         <label>خيارات العرض</label>
-        <div class="controls">
-          <label class="small muted"><input type="checkbox" id="onlyEligible"> عرض التخصصات التي معدلي يؤهلها فقط</label>
-        </div>
+        <div class="controls"><label class="small muted"><input type="checkbox" id="onlyEligible"> عرض التخصصات التي معدلي يؤهلها فقط</label></div>
 
         <label>ملاحظات إضافية (اختياري)</label>
         <textarea id="notes" rows="3" placeholder="مثلاً: أفضل جامعة معينة، أو لا أريد دراسة بعيدة"></textarea>
@@ -260,73 +151,58 @@
 
       <aside class="card">
         <h2>النتائج</h2>
-        <div id="results" class="result-list">
-          <div class="small muted">اضغط "اقترح تخصص لي" لعرض الاقتراحات هنا.</div>
-        </div>
-
-        <div style="margin-top:12px">
-          <button id="export" class="secondary">حفظ النتائج كـ نص</button>
-          <button id="print" class="secondary">طباعة الصفحة</button>
-        </div>
-
-        <div style="margin-top:12px" class="small muted">
-          ملاحظة: النتائج إرشادية — راجع شروط القبول الرسمية للجامعات ونقاط القطع المحددة رسمياً.
-        </div>
+        <div id="results" class="result-list"><div class="small muted">اضغط "اقترح تخصص لي" لعرض الاقتراحات هنا.</div></div>
+        <div style="margin-top:12px"><button id="export" class="secondary">حفظ النتائج كـ نص</button><button id="print" class="secondary">طباعة الصفحة</button></div>
+        <div style="margin-top:12px" class="small muted">ملاحظة: النتائج إرشادية — راجع شروط القبول الرسمية.</div>
       </aside>
     </main>
 
-    <footer>
-      <div class="small muted">صُنع لأغراض تعليمية — لا تعتبر بديلاً عن القبول الرسمي</div>
-    </footer>
+    <footer><div class="small muted">صُنع لأغراض تعليمية — لا تعتبر بديلاً عن القبول الرسمي</div></footer>
   </div>
 
 <script>
-
+/* ===== Overlay sequencing (fixed and robust) ===== */
 (function(){
   const wrap = document.querySelector('.wrap');
-
   const overlay1 = document.getElementById('landingOverlay');
   const close1 = document.getElementById('overlayClose');
-
   const overlay2 = document.getElementById('promoOverlay');
   const close2 = document.getElementById('promoClose');
   const countdownEl = document.getElementById('promoCountdown');
 
-  const AUTO_HIDE_MS = 17000; 
-  const PROMO_MS = 60000;     
+  const AUTO_HIDE_MS = 17000; // وقت ظهور التنبيه الأول (مللي)
+  const PROMO_MS = 20000;     // وقت ظهور التنبيه الثاني (مللي)
+  let timer1 = null, timer2 = null, countdownTimer = null;
 
-  let timer1 = null;
-  let timer2 = null;
-  let countdownTimer = null;
-  let remainingSec = Math.ceil(PROMO_MS/1000);
-
+  function hideOverlayAsync(el){
+    return new Promise(resolve=>{
+      if(!el) return resolve();
+      el.classList.add('hidden');
+      setTimeout(()=>{
+        el.style.display = 'none';
+        resolve();
+      }, 420); // يتطابق مع CSS transition
+    });
+  }
   function showOverlay(el){
     if(!el) return;
     el.style.display = 'flex';
+    void el.offsetWidth;
     el.classList.remove('hidden');
     wrap.classList.add('blurred');
   }
-  function hideOverlay(el){
-    if(!el) return;
-    el.classList.add('hidden');
-
-    setTimeout(()=> {
-      el.style.display = 'none';
-
-      if((!overlay1 || overlay1.style.display === 'none') && (!overlay2 || overlay2.style.display === 'none')){
-        wrap.classList.remove('blurred');
-      }
-    }, 420);
-  }
 
   function startPromoCountdown(){
-
-    remainingSec = Math.ceil(PROMO_MS/1000);
-    if(countdownEl) countdownEl.textContent = remainingSec;
-
+    if(!countdownEl) return;
+    let remaining = Math.ceil(PROMO_MS/1000);
+    countdownEl.textContent = remaining;
     countdownTimer = setInterval(()=>{
-      remainingSec -= 1;
-      if(countdownEl) countdownEl.textContent = Math.max(0, remainingSec);
+      remaining -= 1;
+      countdownEl.textContent = Math.max(0, remaining);
+      if(remaining <= 0){
+        clearInterval(countdownTimer);
+        countdownTimer = null;
+      }
     }, 1000);
   }
   function stopPromoCountdown(){
@@ -334,72 +210,61 @@
     if(countdownEl) countdownEl.textContent = Math.ceil(PROMO_MS/1000);
   }
 
-
   window.addEventListener('load', ()=>{
-
     showOverlay(overlay1);
 
-
-    timer1 = setTimeout(()=>{
-      hideOverlay(overlay1);
+    timer1 = setTimeout(async ()=>{
       timer1 = null;
-
-      setTimeout(()=> showPromoOverlay(), 200); // فاصل قصير لتحسين الإنتقال
+      await hideOverlayAsync(overlay1);
+      showPromo();
     }, AUTO_HIDE_MS);
 
+    if(close1){
+      close1.addEventListener('click', async ()=>{
+        if(timer1){ clearTimeout(timer1); timer1 = null; }
+        await hideOverlayAsync(overlay1);
+        showPromo();
+      }, {once:true});
+    }
 
-    close1 && close1.addEventListener('click', ()=>{
-      if(timer1){ clearTimeout(timer1); timer1 = null; }
-      hideOverlay(overlay1);
-      setTimeout(()=> showPromoOverlay(), 200);
-    });
-
-
-    overlay1 && overlay1.addEventListener('click', (e)=>{
+    overlay1 && overlay1.addEventListener('click', async (e)=>{
       if(e.target === overlay1){
         if(timer1){ clearTimeout(timer1); timer1 = null; }
-        hideOverlay(overlay1);
-        setTimeout(()=> showPromoOverlay(), 200);
+        await hideOverlayAsync(overlay1);
+        showPromo();
       }
-    });
-
-
-    close1 && close1.focus();
+    }, {once:true});
   });
 
-  function showPromoOverlay(){
-
+  function showPromo(){
     showOverlay(overlay2);
-
     startPromoCountdown();
 
-
-    timer2 = setTimeout(()=>{
-      hideOverlay(overlay2);
+    timer2 = setTimeout(async ()=>{
       timer2 = null;
+      await hideOverlayAsync(overlay2);
       stopPromoCountdown();
+      wrap.classList.remove('blurred');
     }, PROMO_MS);
 
+    if(close2){
+      close2.addEventListener('click', async ()=>{
+        if(timer2){ clearTimeout(timer2); timer2 = null; }
+        await hideOverlayAsync(overlay2);
+        stopPromoCountdown();
+        wrap.classList.remove('blurred');
+      }, {once:true});
+    }
 
-    close2 && close2.addEventListener('click', ()=>{
-      if(timer2){ clearTimeout(timer2); timer2 = null; }
-      hideOverlay(overlay2);
-      stopPromoCountdown();
-    });
-
-
-    overlay2 && overlay2.addEventListener('click', (e)=>{
+    overlay2 && overlay2.addEventListener('click', async (e)=>{
       if(e.target === overlay2){
         if(timer2){ clearTimeout(timer2); timer2 = null; }
-        hideOverlay(overlay2);
+        await hideOverlayAsync(overlay2);
         stopPromoCountdown();
+        wrap.classList.remove('blurred');
       }
-    });
-
-
-    close2 && close2.focus();
+    }, {once:true});
   }
-
 
   window.addEventListener('beforeunload', ()=>{
     if(timer1) clearTimeout(timer1);
@@ -408,8 +273,7 @@
   });
 })();
 
-
-
+/* ======== بيانات التخصصات + نقاط القطع + قواعد الفروع ======== */
 const majors = [
   { id:'medicine', name:'دكتور في الطب', traits:{coding:1,lab:5,people:5,design:1,biz:1,stable:5}, desc:'الطب البشري - مهنة تحتاج معدل عالي والتزام طويل.' },
   { id:'dentistry', name:'دكتور في طب الأسنان', traits:{coding:1,lab:5,people:5,design:2,biz:1,stable:5}, desc:'طبيب أسنان: دقة عمل ومهارات يدوية.' },
@@ -492,6 +356,7 @@ const branchAllowed = {
   hotel: ['hotel','tourism','aviation','events','restaurants','home_econ','fashion','culinary','business']
 };
 
+/* ======== وظائف الحساب ======== */
 function capabilityFromPercent(p){
   const v = Number(p);
   if(isNaN(v)) return 0;
@@ -519,7 +384,7 @@ function runRecommendation(branch, totalPercent, prefs, onlyEligible=false){
     if(!allowed.includes(m.id)) return;
     const cutoffPct = cutoffs[m.id] !== undefined ? cutoffs[m.id] : 65.0;
     const cutoff = cutoffPct / 100;
-    const affinity = (branchAllowed[branch].includes(m.id) ? 0.95 : 0.15);
+    const affinity = (allowed.includes(m.id) ? 0.95 : 0.15);
     const interest = interestMatch(m.traits, prefs);
 
     let eligibilityFactor;
@@ -554,7 +419,7 @@ function runRecommendation(branch, totalPercent, prefs, onlyEligible=false){
   return results;
 }
 
-
+/* ======== ربط الواجهة ======== */
 document.getElementById('run').addEventListener('click', ()=>{
   const branch = document.getElementById('branch').value;
   const totalPercent = document.getElementById('totalPercent').value.trim();
@@ -604,7 +469,7 @@ document.getElementById('explain').addEventListener('click', ()=>{
 - نأخذ توافق الفرع (25%) ونستبعد تخصصات ليست من فرعك.
 - نتحقق من نقطة القطع لكل تخصص (أدنى معدل قبول). إذا معدلك >= القطع، يحصل التخصص على دفعة قبول (15%).
 - نأخذ تفضيلاتك (10%) للموازنة النهائية.
-- نرتب: المتأهلين أولاً ثم بقية التخصصات، ونعرض تفاصيل القطع والفرق.`);
+- نرتب: المتأهلين أولاً ثم بقية التخصصات، ونُظهر التفاصيل.`);
 });
 
 document.getElementById('export').addEventListener('click', ()=>{
@@ -625,8 +490,11 @@ function renderResults(sortedResults, inputs){
     div.className = 'major ' + (r.eligible ? 'eligible' : 'not-eligible');
     const scorePercent = Math.round(r.score * 100);
     const diffPct = Math.round((r.cap - r.cutoff) * 1000)/10;
-    const eligibleText = r.eligible ? `<strong style="color:#7ef2b9">مؤهل (معدلك ≥ ${r.cutoffPct}%)</strong>` :
-                                       `<strong style="color:#ffb4b4">غير مؤهل (يحتاج ${r.cutoffPct}% — فرق ${diffPct}% )</strong>`;
+    const eligibleText = r.eligible ? `<strong style="color:#7ef2b9">مؤهل (معدلك ≥ ${r.cutoffPct || r.cutoffPct === 0 ? r.cutoffPct : r.cutoffPct}</strong>)` : `<strong style="color:#ffb4b4">غير مؤهل (يحتاج ${r.cutoffPct}% — فرق ${diffPct}% )</strong>`;
+    // Note: r.cutoffPct not always set in this object name; we use r.cutoffPct if present else r.cutoff*100
+    const cutoffDisplay = (typeof r.cutoffPct !== 'undefined') ? r.cutoffPct : Math.round(r.cutoff*100*10)/10;
+    const eligibleHtml = r.eligible ? `<strong style="color:#7ef2b9">مؤهل (معدلك ≥ ${cutoffDisplay}%)</strong>` : `<strong style="color:#ffb4b4">غير مؤهل (يحتاج ${cutoffDisplay}% — فرق ${diffPct}% )</strong>`;
+
     div.innerHTML = `
       <div style="overflow:hidden">
         <span class="score-badge">${scorePercent}%</span>
@@ -637,9 +505,9 @@ function renderResults(sortedResults, inputs){
       <div style="clear:left;margin-top:8px" class="small muted">
         <strong>تفاصيل قبول</strong>
         <ul style="margin:6px 0 0 12px">
-          <li>أدنى معدل قبول: ${r.cutoffPct}%</li>
-          <li>حالتك بالنسبة للقطع: ${eligibleText}</li>
-          <li>توافق الفرع: ${(Math.round(r.affinity*100))}%</li>
+          <li>أدنى معدل قبول: ${cutoffDisplay}%</li>
+          <li>حالتك بالنسبة للقطع: ${eligibleHtml}</li>
+          <li>توافق الفرع (تقديري): ${(Math.round(r.affinity*100))}%</li>
           <li>القدرة (المعدل): ${(Math.round(r.cap*100))}%</li>
           <li>توافق الاهتمامات: ${(Math.round(r.interest*100))}%</li>
         </ul>
@@ -665,10 +533,10 @@ function generateAdvice(r, inputs){
   } else {
     lines.push('معدلك يغطي شرط القبول لهذا التخصص — تأكد من مستندات القبول الأخرى ومتطلبات الجامعة.');
   }
-  if(['cs','it','eng_software','eng_networks','eng_industrial','mechatronics','eng_mech','eng_electronics'].includes(r.id)){
+  if(['cs','it','eng_software','eng_networks','mechatronics','eng_mech','eng_electronics','eng_software'].includes(r.id)){
     lines.push('نصيحة: أنجز مشاريع عملية أو دورات قصيرة لزيادة فرص القبول والتوظيف.');
   }
-  if(['medicine','dentistry','pharmacy','medlab','physio','ot'].includes(r.id)){
+  if(['medicine','dentistry','pharmacy','medlab'].includes(r.id)){
     lines.push('نصيحة: المجالات الطبية قد تتطلب امتحانات/تقييمات إضافية وخبرة عملية/تطوع؛ استعد لذلك.');
   }
   if(r.affinity < 0.5){
@@ -679,4 +547,3 @@ function generateAdvice(r, inputs){
 </script>
 </body>
 </html>
-
